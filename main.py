@@ -294,20 +294,17 @@ while True:
                 new_results.append(json_data)
 
             if os.path.exists(file_location) and os.path.getsize(file_location) > 0:
-                # Le fichier existe et n'est pas vide
                 with open(file_location, "r+", encoding="utf-8") as file:
                     file.seek(0, os.SEEK_END)
                     pos = file.tell() - 1
                     file.seek(pos)
 
-                    # Vérifier si déjà une liste non vide
                     if pos > 1:
                         file.write(",")
 
                     json_string = json.dumps(new_results, indent=2)
-                    file.write(json_string[1:])  # on saute le premier "["
+                    file.write(json_string[1:])
             else:
-                # Fichier inexistant ou vide → on crée une liste
                 with open(file_location, "w", encoding="utf-8") as file:
                     json.dump(new_results, file, ensure_ascii=False, indent=2)
             new_results = []
