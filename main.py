@@ -2,6 +2,7 @@ import random
 import pygame
 import json
 from time import sleep
+import os
 pygame.init()
 
 WHITE = (255,255,255)
@@ -10,8 +11,10 @@ BLACK = (0,0,0)
 PURPLE = (100,0,100)
 RED = (255,0,0)
 
-sizex = 100
-sizey = 100
+file_location = "maze_to_minecraftchunk.json"
+
+sizex = 400
+sizey = 400
 size = (sizex,sizey)
 screen = pygame.display.set_mode(size)
 
@@ -21,20 +24,11 @@ done = False
 
 clock = pygame.time.Clock()
 
-width = 10
+width = 4
 cols = int(size[0] / width)
 rows = int(size[1] / width)
 
 stack = []
-
-try:
-    with open("myfile.json", "r") as f:
-        data = json.load(f)
-except:
-    with open("myfile.json", "w") as f:
-        data = {
-            "chunks": []
-            }
 
 
 class Cell():
@@ -157,8 +151,10 @@ while True:
         
     elif len(stack) == 0:
         i = 0
+        new_results = []
         for y in range(int(sizey/width)):
             for x in range(int(sizex/width)):
+                pygame.image.save(screen, "screenshot.jpg")
                 i += 1
                 # print(y, x)
                 #print(grid[y][x].walls)
@@ -167,7 +163,7 @@ while True:
                 if grid[y][x].walls == [True, True, False, True]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_one",
                         "direction": 0
                         }
@@ -175,7 +171,7 @@ while True:
                 elif grid[y][x].walls == [True, True, True, False]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_one",
                         "direction": 1
                         }
@@ -183,7 +179,7 @@ while True:
                 elif grid[y][x].walls == [False, True, True, True]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_one",
                         "direction": 2
                         }
@@ -191,7 +187,7 @@ while True:
                 elif grid[y][x].walls == [True, False, True, True]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_one",
                         "direction": 3
                         }
@@ -201,7 +197,7 @@ while True:
                 elif grid[y][x].walls == [True, True, False, False]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_double",
                         "direction": 0
                         }
@@ -209,7 +205,7 @@ while True:
                 elif grid[y][x].walls == [False, True, True, False]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_double",
                         "direction": 1
                         }
@@ -217,7 +213,7 @@ while True:
                 elif grid[y][x].walls == [False, False, True, True]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_double",
                         "direction": 2
                         }
@@ -225,7 +221,7 @@ while True:
                 elif grid[y][x].walls == [True, False, False, True]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_double",
                         "direction": 3
                         }
@@ -235,7 +231,7 @@ while True:
                 elif grid[y][x].walls == [True, False, True, False]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_corridor",
                         "direction": 1
                         }
@@ -243,7 +239,7 @@ while True:
                 elif grid[y][x].walls == [False, True, False, True]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_corridor",
                         "direction":0
                         }
@@ -253,7 +249,7 @@ while True:
                 elif grid[y][x].walls == [True, False, False, False]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_triple",
                         "direction": 0
                         }
@@ -261,7 +257,7 @@ while True:
                 elif grid[y][x].walls == [False, True, False, False]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_triple",
                         "direction": 1
                         }
@@ -269,7 +265,7 @@ while True:
                 elif grid[y][x].walls == [False, False, True, False]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_triple",
                         "direction": 2
                         }
@@ -277,7 +273,7 @@ while True:
                 elif grid[y][x].walls == [False, False, False, True]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_triple",
                         "direction": 3
                         }
@@ -287,7 +283,7 @@ while True:
                 elif grid[y][x].walls == [False, False, False, False]:
                     json_data = {
                         "case": i,
-                        "chunk": f"{int(y-(sizey/width)/2),int(x-(sizex/width)/2)}",
+                        "chunk": f"{int(x-(sizex/width)/2),int(y-(sizey/width)/2)}",
                         "structure":"blamemod:whiteroom_quad",
                         "direction": 0
                         }
@@ -295,13 +291,30 @@ while True:
                 else:
                     print("hummmmm... not supposed to happen")
                     
-                data['chunks'].append(json_data)
-                with open("myfile.json", "w") as f:
-                    json.dump(data, f, ensure_ascii=False, indent=2)
+                new_results.append(json_data)
+
+            if os.path.exists(file_location) and os.path.getsize(file_location) > 0:
+                # Le fichier existe et n'est pas vide
+                with open(file_location, "r+", encoding="utf-8") as file:
+                    file.seek(0, os.SEEK_END)
+                    pos = file.tell() - 1
+                    file.seek(pos)
+
+                    # Vérifier si déjà une liste non vide
+                    if pos > 1:
+                        file.write(",")
+
+                    json_string = json.dumps(new_results, indent=2)
+                    file.write(json_string[1:])  # on saute le premier "["
+            else:
+                # Fichier inexistant ou vide → on crée une liste
+                with open(file_location, "w", encoding="utf-8") as file:
+                    json.dump(new_results, file, ensure_ascii=False, indent=2)
+            new_results = []
 
         pygame.quit()
     
     pygame.display.flip()
     
-    clock.tick(60)
+    clock.tick(0)
 
