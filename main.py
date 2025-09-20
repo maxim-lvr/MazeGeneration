@@ -3,6 +3,7 @@ import pygame
 import json
 from time import sleep
 import os
+
 pygame.init()
 
 WHITE = (255,255,255)
@@ -13,8 +14,8 @@ RED = (255,0,0)
 
 file_location = "maze_to_minecraftchunk.json"
 
-sizex = 400
-sizey = 400
+sizex = 800
+sizey = 800
 size = (sizex,sizey)
 screen = pygame.display.set_mode(size)
 
@@ -24,7 +25,7 @@ done = False
 
 clock = pygame.time.Clock()
 
-width = 4
+width = 10
 cols = int(size[0] / width)
 rows = int(size[1] / width)
 
@@ -152,9 +153,27 @@ while True:
     elif len(stack) == 0:
         i = 0
         new_results = []
+        pygame.image.save(screen,"screenshot1.jpg")
+        tab = []
+        for i in range(100):
+            valuex = random.randrange(1, int(sizex/width))
+            valuey = random.randrange(1, int(sizey/width))
+            tab.append(valuex)
+            tab.append(valuey)
+            grid[valuey][valuex].walls = [False, False, False, False]
+
+        
+        screen.fill(GREY)
+        for y in range(rows):
+            for x in range(cols):
+                grid[y][x].draw()
+        pygame.display.flip()
+        pygame.image.save(screen, "screenshot2.jpg")
+        print("sleeping")
+        sleep(10)
         for y in range(int(sizey/width)):
             for x in range(int(sizex/width)):
-                pygame.image.save(screen, "screenshot.jpg")
+                
                 i += 1
                 # print(y, x)
                 #print(grid[y][x].walls)
@@ -313,5 +332,5 @@ while True:
     
     pygame.display.flip()
     
-    clock.tick(0)
+    clock.tick(120)
 
