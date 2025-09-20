@@ -4,5 +4,6 @@
 /lib64
 pyvenv.cfg
 
-.jpg
+*.jpg
 maze_to_minecraftchunk.json
+test.py
